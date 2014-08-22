@@ -1,0 +1,298 @@
+<style>
+    .teamclicker {
+        cursor: pointer;
+    }
+
+    .pandava {
+        pointer-events: none;
+    }
+
+    .attacked {
+        display: none;
+        position: absolute;
+        top: 30px;
+        left: 20px;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: darkred;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: black;
+        text-decoration: none;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    th {
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        border: none;
+        vertical-align: middle;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        width: 80px;
+        height: 80px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .yellow {
+        background: #dab212;
+        border-radius: 50%;
+        color: black;
+    }
+
+    .orange {
+        background: #ff862a;
+        border-radius: 50%;
+        color: black;
+    }
+</style>
+<div style="background: white;margin:10px;width:25%; border-radius: 10px;float:left">
+  <table class="table condensed-table" style="width: 100%;text-align: center;margin:0;padding:0">
+    <tr>
+      <td colspan="3">
+        <h1>
+          Commanders <br/>
+          <small>Life left : <%= @commanders.map { |c| c.pcurrent }.sum %></small>
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <th>Pts</th>
+      <th>Kaurava</th>
+      <th>Life</th>
+    </tr>
+    <% @commanders.each do |kaurava| %>
+        <tr class="clickable">
+          <td><h2 class="yellow"><%= kaurava.points %></h2></td>
+          <td style="width:40%;position: relative">
+            <%= image_tag "kauravas/#{kaurava.name.downcase}.jpg", style: "width:100%" %>
+            <%= link_to "Attack", "#", class: "btn btn-primary btn-lg attacked", id: kaurava.id %>
+          </td>
+          <td><h2 class="orange"><%= kaurava.pcurrent %></h2></td>
+        </tr>
+    <% end %>
+  </table>
+  <table class="table condensed-table" style="width: 100%;text-align: center;margin:0;padding:0">
+    <% @defcommanders.each do |kaurava| %>
+        <tr style="background: red">
+          <td><h2 class="yellow"><%= kaurava.points %></h2></td>
+          <td style="width:40%;position: relative">
+            <%= image_tag "kauravas/#{kaurava.name.downcase}.jpg", style: "width:100%" %>
+            <%= link_to "Attack", "#", class: "btn btn-primary btn-lg attacked", id: kaurava.id %>
+          </td>
+          <td><h2 class="orange"><%= kaurava.pcurrent %></h2></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+<div style="background: white;margin:10px;width:25%; border-radius: 10px;float: left">
+  <table class="table condensed-table" style="width: 100%;display: inline-block;text-align: center;margin:0;padding:0">
+    <tr>
+      <td colspan="3">
+        <h1>
+          Warriors
+          <br/>
+          <small>Life left : <%= @warriors.map { |c| c.pcurrent }.sum %></small>
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <th>Pts</th>
+      <th>Kaurava</th>
+      <th>Life</th>
+    </tr>
+    <% @warriors.each do |kaurava| %>
+        <tr class="clickable">
+          <td><h2 class="yellow"><%= kaurava.points %></h2></td>
+          <td style="width:40%;position: relative">
+            <%= image_tag "kauravas/#{kaurava.name.downcase}.jpg", style: "width:100%" %>
+            <%= link_to "Attack", "#", class: "btn btn-primary btn-lg attacked", id: kaurava.id %>
+          </td>
+          <td><h2 class="orange"><%= kaurava.pcurrent %></h2></td>
+        </tr>
+    <% end %>
+  </table>
+  <table class="table condensed-table" style="width: 100%;text-align: center;margin:0;padding:0">
+    <% @defwarriors.each do |kaurava| %>
+        <tr style="background: red">
+          <td><h2 class="yellow"><%= kaurava.points %></h2></td>
+          <td style="width:40%;position: relative">
+            <%= image_tag "kauravas/#{kaurava.name.downcase}.jpg", style: "width:100%" %>
+            <%= link_to "Attack", "#", class: "btn btn-primary btn-lg attacked", id: kaurava.id %>
+          </td>
+          <td><h2 class="orange"><%= kaurava.pcurrent %></h2></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+<div style="background: white;margin:10px;width:45%; border-radius: 10px;float: left;padding-left:10px;padding-right:10px;padding-bottom:20px">
+  <table class="table condensed-table" style="width: 100%;display: inline-block;text-align: left;margin:0;padding:0">
+    <tr>
+      <td colspan="4">
+        <h1 style="text-align: center">
+          Teams
+          <br/>
+          <small>Attack left
+            : <%= @teams.map { |t| t.pandavas.where(used: false).all }.flatten.map { |p| p.attack }.flatten.sum %></small>
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Pts</th>
+      <th>Cards Left</th>
+      <th>Attack</th>
+    </tr>
+    <% @teams.each do |team| %>
+        <tr>
+          <td style="background:<%= team.name %>;" class="teamclicker" id="<%= team.id %>"></td>
+          <td><%= team.name %></td>
+          <td><h3 style="margin:0;padding:0"><%= team.score %></h3></td>
+          <td>
+            <small>
+              <% team.pandavas.where(used: false).each_with_index do |p, index| %>
+                  <%= link_to p.name, "#", id: "#{p.id}", class: "pandava" %>
+                  <% if index< team.pandavas.where(used: false).count-1 %>,
+                  <% end %>
+              <% end %>
+            </small>
+          </td>
+          <td>
+            <h3 style="margin:0;padding:0;text-align: center"><%= team.pandavas.where(used: false).flatten.map { |p| p.attack }.flatten.sum %></h3>
+          </td>
+        </tr>
+    <% end %>
+  </table>
+  <br/>
+  <br/>
+  <%= link_to "Start a New Game", round_reset_path(@game.id), style: "font-size:2em;", class: "btn btn-danger btn-lg pull-right", :'data-confirm' => "Are you sure?" %>
+</div>
+
+
+<div class="modal fade" id="result">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title"></h1>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="page-reload">Next</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="analysis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h1 class="modal-title" id="myModalLabel"></h1>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        var attpan = [];
+
+        $('.clickable').on('click', function (e) {
+            e.stopPropagation();
+            $('.clickable').css('background', 'none');
+            $('.clickable').find('.attacked').hide();
+            $(this).css('background', 'black');
+            $(this).find('.attacked').show();
+            $('.pandava').css({
+                'pointer-events': 'auto',
+                'color': 'gray'
+            });
+        });
+        $('.pandava').on('click', function (e) {
+            e.stopPropagation();
+            if ($(this).hasClass('selected')){
+                $(this).removeClass('selected').css({
+                    'font-weight': 'normal',
+                    'color': 'gray'
+                });
+                var index = attpan.indexOf($(this).attr("id"));
+                if (index > -1) {
+                    attpan.splice(index, 1);
+                }
+            }else{
+                $(this).addClass('selected').css({
+                    'font-weight': 'bolder',
+                    'color': 'black'
+                });
+                attpan.push($(this).attr("id"))
+            }
+            console.log(attpan)
+        });
+        $('.attacked').on('click', function (e) {
+            e.stopPropagation();
+            console.log($('.selected').length)
+            if ($('.selected').length < 1) {
+                alert("Select the Pandavas first")
+            } else {
+                $.ajax({
+                    url: "/attack/" + $(this).attr("id") + "/" + attpan.join("-"),
+                    method: "post",
+                    success: function (data) {
+                        var pieces = data.split("||");
+                        $('#result').find('.modal-title').html(pieces[0]);
+                        $('#result').find('.modal-body').html(pieces[1]);
+                        $('#result').modal('show');
+                        $('#page-reload').on('click', function () {
+                            window.location.reload();
+                        })
+                    }
+                });
+            }
+        });
+        $('.teamclicker').on('click', function (e) {
+            e.stopPropagation();
+            var teamname = $(this).next().html();
+            $.ajax({
+                url: "/teamdissect/" + $(this).attr("id"),
+                method: "get",
+                success: function (data) {
+                    var pieces = data.split("||");
+                    $('#analysis').find('.modal-title').empty().html("<div style='display:inline-block;height:50px;vertical-align:middle;width:50px;background:" + teamname + "'></div> Team " + teamname);
+                    $('#analysis').find('.modal-body').empty().html(pieces.join("<br/>"));
+                    $('#analysis').modal('show');
+                }
+            });
+        })
+
+    })
+</script>

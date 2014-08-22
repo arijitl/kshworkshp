@@ -1,0 +1,9 @@
+<%= image_tag "title.jpg", style: "width:60%;float:left" %>
+<div style="color: white;font-size: 28px;width: 40%;float:left">
+  <br/>
+  <br/>
+  <h1 style="text-align: center">Start a Game</h1>
+  <% Game.where(complete: false).all.each do |game| %>
+      <h3 style="text-align: center"><%= link_to "#{game.client.name} - #{game.name}", game.rounds.select{|r| !r.complete}.first, class:"btn btn-danger btn-lg" %></h3>
+  <% end %>
+</div>
