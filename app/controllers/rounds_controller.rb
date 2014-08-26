@@ -2,10 +2,10 @@ class RoundsController < ApplicationController
   def show
     @round=Round.find(params[:id])
     @game=@round.game
-    @commanders=@game.kauravas.where(defeated: false).where("points>?", 4).all
-    @defcommanders=@game.kauravas.where(defeated: true).where("points>?", 4).all
-    @warriors=@game.kauravas.where(defeated: false).where("points<?", 5).all
-    @defwarriors=@game.kauravas.where(defeated: true).where("points<?", 5).all
+    @commanders=@game.kauravas.where(defeated: false).where("points>?", 3).all
+    @defcommanders=@game.kauravas.where(defeated: true).where("points>?", 3).all
+    @warriors=@game.kauravas.where(defeated: false).where("points<?", 4).all
+    @defwarriors=@game.kauravas.where(defeated: true).where("points<?", 4).all
     @teams=@game.teams
   end
 

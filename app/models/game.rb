@@ -11,7 +11,7 @@ class Game < ActiveRecord::Base
   def create_teams
     colors=["Violet", "Indigo", "Blue", "Green", "Yellow", "Orange", "Red", "Black", "White", "Brown"]
     self.team_count.times do |index|
-      Team.create!(game_id: self.id, name: colors[index], score:0)
+      Team.create!(game_id: self.id, name: colors[index], score: 0)
     end
   end
 
@@ -22,11 +22,11 @@ class Game < ActiveRecord::Base
   end
 
   def create_kauravas
-    karray=["Duryodhana", "Bhishma", "Drona", "Karna", "Shalya", "Dushasana", "Shakuni", "Jayadratha"]
-    kparray=[9, 8, 7, 6, 4, 4, 4, 4]
+    karray=["Duryodhana", "Bhishma", "Drona", "Karna", "Shalya", "Dushasana", "Shakuni", "Jayadratha", "Bhagadatta", "Ashwathama"]
+    kparray=[9, 8, 7, 6, 5, 3, 3, 3, 3, 3]
 
     karray.each_with_index do |kau, index|
-      kpower=(self.team_count*kparray[index]/3).to_i
+      kpower=(self.team_count*kparray[index]*9/24).to_i
       Kaurava.create!(game_id: self.id, name: kau, points: kparray[index], pstart: kpower, pcurrent: kpower, defeated: false)
     end
   end
