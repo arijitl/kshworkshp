@@ -15,7 +15,10 @@ class RoundsController < ApplicationController
     gname= game.name
     rndcnt=game.round_count
     teamcnt=game.team_count
-    game.destroy
+    Round.where(:game_id => game.id).delete_all
+    Team.where(:game_id => game.id).delete_all
+    Kaurava.where(:game_id => game.id).delete_all
+    game.delete
     newgame=Game.create(client_id: client, name: gname, round_count: rndcnt, team_count: teamcnt, complete: false)
     redirect_to newgame.rounds.first
   end
